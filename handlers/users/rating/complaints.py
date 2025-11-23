@@ -7,7 +7,7 @@ from database.db import get_connection
 from database.queries import send_complaint, add_interaction, get_dislike_type_id
 
 from .viewing import viewing_profiles
-from handlers.users.show_menus import show_user_rating_menu
+from show_menus import show_user_rating_menu
 
 router = Router()
 

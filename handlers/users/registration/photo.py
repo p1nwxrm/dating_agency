@@ -78,5 +78,5 @@ async def keep_existing_photos(message: types.Message, state: FSMContext):
         await message.answer("❌ У тебе немає поточних фото в анкеті.")
         return
 
-    await state.update_data(photos=[p["photo_url"] for p in existing_photos])
+    await state.update_data(photos = [p["photo_url"] for p in existing_photos])
     await ask_about_yourself(message, state, prefix_text = "📸 Поточні фото залишено без змін.")

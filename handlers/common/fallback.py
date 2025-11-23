@@ -19,4 +19,3 @@ async def handle_unrecognized_message(message: types.Message, state: FSMContext)
 async def handle_unrecognized_callback(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer("🤔 Хмм… не можу зараз обробити цю дію. Повертаємося в головне меню ⬅️🏠", show_alert = False)
     await cmd_start(callback.message, state)
-

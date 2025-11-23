@@ -30,3 +30,5 @@ async def process_gender(callback: types.CallbackQuery, state: FSMContext):
     # --- Ціль знайомства ---
     await ask_goal(callback.message)
     await state.set_state(Registration.set_goal)
+
+    await callback.answer()

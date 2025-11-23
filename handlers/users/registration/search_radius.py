@@ -13,6 +13,10 @@ router = Router()
 # ---------------------------
 @router.message(Registration.set_search_radius)
 async def process_radius(message: types.Message, state: FSMContext):
+    if message.text is None:
+        await message.answer("❌ Введи число (наприклад, 10 або 5.5)")
+        return
+
     text = message.text.strip()
 
     if text == "🌍 Шукати по всьому світу":

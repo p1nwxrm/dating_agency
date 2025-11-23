@@ -9,7 +9,7 @@ from utils.geolocation import calculate_distance
 from config import DAILY_VIEW_LIMIT
 
 from utils.show_profile import show_profile
-from handlers.users.show_menus import show_user_main_menu, show_user_rating_menu
+from show_menus import show_user_main_menu, show_user_rating_menu
 
 router = Router()
 

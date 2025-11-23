@@ -9,6 +9,10 @@ router = Router()
 # ---------------------------
 @router.message(Registration.set_name)
 async def process_name(message: types.Message, state: FSMContext):
+    if message.text is None:
+        await message.answer("❌ Введи, будь ласка, своє ім'я:")
+        return
+
     name = message.text.strip()
     await state.update_data(name = name)
 

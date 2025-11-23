@@ -7,7 +7,7 @@ from states.user_states import UserMenu
 from database.db import get_connection
 
 from utils.show_profile import show_profile
-from handlers.users.show_menus import show_user_main_menu
+from show_menus import show_user_main_menu
 
 router = Router()
 

@@ -34,6 +34,8 @@ async def choose_desired_gender(callback: types.CallbackQuery, state: FSMContext
         buttons.append([InlineKeyboardButton(text = "➡️ Далі", callback_data = "goto_location")])
     await callback.message.edit_text("Оберіть, співрозмовники якої статі вас цікавлять 👇", reply_markup = InlineKeyboardMarkup(inline_keyboard = buttons))
 
+    await callback.answer()
+
 # ---------------------------
 # Кнопка “Далі” → Геолокація
 # ---------------------------
@@ -42,3 +44,5 @@ async def ask_location(callback: types.CallbackQuery, state: FSMContext):
     kb = ReplyKeyboardMarkup(keyboard = [[KeyboardButton(text = "📍 Надіслати геолокацію", request_location = True)]], resize_keyboard = True)
     await callback.message.answer("Будь ласка, надішли свою геолокацію 🌍", reply_markup = kb)
     await state.set_state(Registration.set_location)
+
+    await callback.answer()

@@ -2,7 +2,7 @@ from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 from states.admin_states import AdminPanel
 from database.queries import get_global_statistics
-from .show_menus import show_admin_main_menu
+from show_menus import show_admin_main_menu
 
 router = Router()
 

@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from database.queries import get_admins_and_moderators
 from utils.show_moderator_stats import show_moderator_stats
 from states.admin_states import AdminPanel
-from handlers.admins.show_menus.main_menu import show_admin_main_menu
+from show_menus.admins.main_menu import show_admin_main_menu
 
 router = Router()
 
@@ -39,12 +39,10 @@ async def show_staff_list(message: types.Message, state: FSMContext):
 
 	# Виводимо статистику кожного модератора
 	if moderators_ids:
-		await message.answer("👮‍♂️ Статистика модераторів:")
-
 		for mod_id in moderators_ids:
 			await show_moderator_stats(bot = message.bot, chat_id = message.chat.id, user_id = mod_id)
 	else:
-		await message.answer("Немає модераторів.")
+		await message.answer("‍👮‍♂️ Наразі немає жодного модератора.")
 
 	# Повертаємося до головного меню
 	await show_admin_main_menu(message.bot, message.chat.id)

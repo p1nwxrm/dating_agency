@@ -43,3 +43,5 @@ async def process_goal(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.answer("Оберіть, співрозмовники якої статі вас цікавлять 👇", reply_markup = kb)
     await state.update_data(desired_genders = [])
     await state.set_state(Registration.set_desired_genders)
+
+    await callback.answer()

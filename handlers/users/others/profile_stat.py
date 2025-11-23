@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from states.user_states import UserMenu
 
 from utils.show_user_stats import show_user_stats
-from handlers.users.show_menus import show_user_main_menu
+from show_menus import show_user_main_menu
 
 router = Router()
 

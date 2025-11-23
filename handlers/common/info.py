@@ -6,9 +6,7 @@ from states.admin_states import AdminPanel
 from states.moderator_states import ModeratorPanel
 from states.user_states import UserMenu
 
-from handlers.users.show_menus.main_menu import show_user_main_menu
-from handlers.admins.show_menus.main_menu import show_admin_main_menu
-from handlers.moderators.show_menus.main_menu import show_moderator_main_menu
+from show_menus import show_user_main_menu, show_moderator_main_menu, show_admin_main_menu
 
 from .start import cmd_start
 from database.queries import get_user_role, profile_exists

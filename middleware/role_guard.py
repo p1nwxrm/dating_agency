@@ -32,7 +32,7 @@ class RoleGuardMiddleware(BaseMiddleware):
             else:
                 if current_state.startswith("AdminPanel"):
                     current_role = 1
-                elif current_state.startswith("ModeratorPanel"):
+                elif current_state.startswith("ModeratorPanel") or current_state.startswith("ModeratorBan") :
                     current_role = 2
                 else:
                     current_role = 3

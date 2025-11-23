@@ -1,9 +1,10 @@
 from aiogram import Router, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
 from aiogram.fsm.context import FSMContext
 from states.user_states import Registration
-from database.db import get_connection
-from database.queries import get_about_info
+
+from database.queries import get_profile, get_about_info
 from .save_profile import save_profile_to_db
 
 router = Router()
@@ -12,25 +13,15 @@ router = Router()
 # Допоміжна функція: перехід до розділу "Про себе"
 # ---------------------------
 async def ask_about_yourself(message: types.Message, state: FSMContext, prefix_text: str = ""):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary = True)
-
-    cursor.execute("""
-        SELECT p.description
-        FROM profiles p
-        JOIN users u ON p.user_id = u.id
-        WHERE u.tg_username = %s
-    """, (message.from_user.username,))
-    profile = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
+    user_id = message.from_user.id
+    profile = get_profile(user_id)
+    about_info = get_about_info(user_id)
 
     # Формуємо клавіатуру
     buttons = [[KeyboardButton(text = "Пропустити")]]
     extra_text = ""
 
-    if profile and profile["description"]:
+    if profile and about_info:
         buttons.insert(0, [KeyboardButton(text = "📝 Залишити поточний опис")])
         extra_text = "\n\nЯкщо хочеш залишити поточний опис — натисни кнопку нижче."
 

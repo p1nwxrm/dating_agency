@@ -8,7 +8,7 @@ from database.queries import get_like_type_id, get_dislike_type_id
 from database.queries import add_interaction, add_to_blacklist
 
 from .viewing import viewing_profiles
-from handlers.users.show_menus import show_user_main_menu, show_user_complaints_menu
+from show_menus import show_user_main_menu, show_complaints_menu
 
 router = Router()
 
@@ -54,7 +54,7 @@ async def handle_profile_reaction(message: types.Message, state: FSMContext):
             conn.close()
 
         # Якщо дозволено — показуємо меню скарг
-        await show_user_complaints_menu(message.bot, message.chat.id)
+        await show_complaints_menu(message.bot, message.chat.id)
         await state.set_state(UserMenu.complaints_menu)
         return
 

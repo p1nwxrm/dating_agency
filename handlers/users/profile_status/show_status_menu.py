@@ -3,7 +3,7 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from states.user_states import UserMenu
 
-from handlers.users.show_menus import show_user_status_menu
+from show_menus import show_user_status_menu
 
 router = Router()
 

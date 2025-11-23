@@ -8,12 +8,9 @@ from states.moderator_states import ModeratorPanel
 from states.user_states import Registration, UserMenu
 
 from utils.show_profile import show_profile
-from handlers.users.show_menus.main_menu import show_user_main_menu
-from handlers.admins.show_menus.main_menu import show_admin_main_menu
-from handlers.moderators.show_menus.main_menu import show_moderator_main_menu
+from show_menus import show_user_main_menu, show_moderator_main_menu, show_admin_main_menu
 
-from database.db import get_connection
-from database.queries import get_user_role, user_exists, profile_exists
+from database.queries import add_new_user, get_user_role, user_exists, profile_exists
 
 router = Router()
 
@@ -22,31 +19,28 @@ router = Router()
 # ---------------------------
 @router.message(CommandStart())
 async def cmd_start(message: types.Message, state: FSMContext):
+    # Якщо /start прийшло від бота — ігноруємо (це ghost-update)
+    if message.from_user.is_bot:
+        return
+
     user_id = message.from_user.id
     username = message.from_user.username
-
-    conn = get_connection()
-    cursor = conn.cursor(dictionary = True)
 
     # Якщо користувач у БД не існує — додаємо
     exists = user_exists(user_id)
 
     if not exists:
-        cursor.execute(
-            "INSERT INTO users (id, tg_username, role_id) VALUES (%s, %s, %s)",
-            (user_id, username, 3)
-        )
-        conn.commit()
+        add_new_user(user_id, username)
 
         # Вітання тільки для нових користувачів
         await message.answer(
-	        f"👋 Привіт, {message.from_user.first_name or 'користувачу'}!\n\n"
-	        "💫 Ласкаво просимо у RIZZEM — твій новий простір для знайомств, цікавих людей і яскравих вражень!\n\n"
-	        "💬 Тут ти можеш не просто знайти друзів або нові знайомства — а й ділитися своїми інтересами, "
-	        "спілкуватися з тими, хто тебе справді зрозуміє, і відкривати для себе нові можливості.\n\n"
-	        "📸 Додай свої фото, розкажи трохи про себе і обери людей, які тобі цікаві.\n\n"
-	        "❤️ Не бійся показати себе таким, який ти є — тут цінують щирість і відкритість.\n\n"
-	        "✨ Починай знайомства вже зараз!"
+            f"👋 Привіт, {message.from_user.first_name or 'користувачу'}!\n\n"
+            "💫 Ласкаво просимо у RIZZEM — твій новий простір для знайомств, цікавих людей і яскравих вражень!\n\n"
+            "💬 Тут ти можеш не просто знайти друзів або нові знайомства — а й ділитися своїми інтересами, "
+            "спілкуватися з тими, хто тебе справді зрозуміє, і відкривати для себе нові можливості.\n\n"
+            "📸 Додай свої фото, розкажи трохи про себе і обери людей, які тобі цікаві.\n\n"
+            "❤️ Не бійся показати себе таким, який ти є — тут цінують щирість і відкритість.\n\n"
+            "✨ Починай знайомства вже зараз!"
         )
 
     # Отримуємо роль користувача
@@ -56,18 +50,12 @@ async def cmd_start(message: types.Message, state: FSMContext):
     if role == 1:
         await show_admin_main_menu(message.bot, message.chat.id)
         await state.set_state(AdminPanel.main_menu)
-
-        cursor.close()
-        conn.close()
         return
 
     # Якщо роль — МОДЕРАТОР
     if role == 2:
         await show_moderator_main_menu(message.bot, message.chat.id)
         await state.set_state(ModeratorPanel.main_menu)
-
-        cursor.close()
-        conn.close()
         return
 
     # Якщо роль — користувач
@@ -85,6 +73,3 @@ async def cmd_start(message: types.Message, state: FSMContext):
 
         await show_user_main_menu(message.bot, message.chat.id)
         await state.set_state(UserMenu.main_menu)
-
-    cursor.close()
-    conn.close()
